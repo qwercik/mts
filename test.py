@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import subprocess
+from termcolor import colored
 
 APP_BEEING_TESTED_PATH = './r2i.py'
 INPUT_FILE_PATH = './tests/input.txt'
@@ -19,9 +20,14 @@ for index, inputLine in enumerate(inputData):
     output = subprocess.check_output(
         APP_BEEING_TESTED_PATH,
         input=inputLine.encode()
-    ).strip()
+    ).strip().decode()
     
     result = output == outputLine
 
-    print('Test nr', index + 1, '-', result)
+    color = 'green' if result else 'red'
+    testRunInfo = 'Test nr ' + str(index + 1) + ' - ' + str(result)
+
+    print(colored(testRunInfo, color))
+    print('>>>', inputLine)
+    print('<<<', output)
 
