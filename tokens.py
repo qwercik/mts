@@ -1,8 +1,8 @@
 tokensDescription = {
     'constant': r'^[a-e]$',
     'variable': r'^[A-Z]$',
-    'function': r'^[f-n]/\d$',
-    'predicate': r'^[p-z]/\d$',
+    'function': r'^([f-n])/(\d)$',
+    'predicate': r'^([p-z])/(\d)$',
     'negation': r'^(?:NOT|~|¬)$',
     'conjunction': r'^(?:AND|&|∧)$',
     'disjunction': r'^(?:OR|\||∨)$',

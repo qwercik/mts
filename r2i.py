@@ -14,17 +14,18 @@ def parseRpn(rpnFormula):
     tokens = rpnFormula.split()
     for token in tokens:
         for tokenType, regex in tokensDescription.items():
-            matchResult = re.match(regex, token)
+            matchResult = re.findall(regex, token)
             if matchResult:
-                print(token, tokenType)
+                parsedOutput.append({ 'type': tokenType, 'data': matchResult[0] })
                 break
         else:
             raise IncorrectTokenError(token)
 
-    return ''
+    return parsedOutput
 
 def translateRpnToInfix(rpnFormula):
     parsed = parseRpn(rpnFormula)
+    print(parsed)
     return ''
 
 def main():
