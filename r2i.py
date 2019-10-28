@@ -5,10 +5,17 @@ import sys
 import string
 import lexer
 
+EXIT_INCORRECT_SYMBOL = 1
+EXIT_INCORRECT_FORMULA = 2
+EXIT_UNKNOWN_ERROR = 255
+
 def popFew(inputList, count):
     data = inputList[-count:]
     inputList = inputList[:-count]
     return (inputList, data)
+
+class IncorrectFormulaError(Exception):
+    pass
 
 def translateRpnToInfix(rpnFormula):
     stack = []
@@ -43,16 +50,28 @@ def translateRpnToInfix(rpnFormula):
             textOutput = '(' + symbol + ' ' + arguments[0]['data'] + ' ' + arguments[1]['data'] + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
     
+    if len(stack) != 1:
+        raise IncorrectFormulaError(rpnFormula)
+
     infixFormula = stack[0]['data']
     return infixFormula
 
 def main():
     for line in sys.stdin:
         rpnFormula = line.strip()
+
         try:
-            print(translateRpnToInfix(rpnFormula))
-        except IncorrectTokenError as error:
-            print('Incorrect token', error)
+            infixFormula = translateRpnToInfix(rpnFormula)
+            print(infixFormula)
+        except lexer.IncorrectSymbolError as symbol:
+            print('Incorrect symbol', symbol)
+            sys.exit(EXIT_INCORRECT_SYMBOL)
+        except IncorrectFormulaError as formula:
+            print('Incorrect formula', formula)
+            sys.exit(EXIT_INCORRECT_FORMULA)
+        except:
+            print('Unknown error')
+            sys.exit(EXIT_UNKNOWN_ERROR)
 
 if __name__ == '__main__':
     main()

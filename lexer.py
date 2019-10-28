@@ -1,6 +1,6 @@
 import re
 
-class IncorrectTokenError(Exception):
+class IncorrectSymbolError(Exception):
     pass
 
 tokensTypes = {
@@ -41,7 +41,7 @@ def tokenizeRpn(rpnFormula):
                 })
                 break
         else:
-            raise IncorrectTokenError(token)
+            raise IncorrectSymbolError(token)
 
     return tokens
 
