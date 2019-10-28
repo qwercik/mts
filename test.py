@@ -7,6 +7,10 @@ APP_BEEING_TESTED_PATH = './r2i.py'
 INPUT_FILE_PATH = './tests/input.txt'
 OUTPUT_FILE_PATH = './tests/output.txt'
 
+TEST_OK_COLOR = 'green'
+TEST_FAIL_COLOR = 'red'
+EXPECTED_OUTPUT_COLOR = 'cyan'
+
 inputFile = open(INPUT_FILE_PATH)
 inputData = inputFile.readlines()
 
@@ -24,10 +28,12 @@ for index, inputLine in enumerate(inputData):
     
     result = output == outputLine
 
-    color = 'green' if result else 'red'
+    color = TEST_OK_COLOR if result else TEST_FAIL_COLOR
     testRunInfo = 'Test nr ' + str(index + 1) + ' - ' + str(result)
 
     print(colored(testRunInfo, color))
     print('>>>', inputLine)
     print('<<<', output)
+
+    print(colored('<<< ' + outputLine, EXPECTED_OUTPUT_COLOR))
 
