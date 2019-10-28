@@ -29,7 +29,8 @@ for index, inputLine in enumerate(inputData):
     result = output == outputLine
 
     color = TEST_OK_COLOR if result else TEST_FAIL_COLOR
-    testRunInfo = 'Test nr ' + str(index + 1) + ' - ' + str(result)
+    resultInfo = 'OK' if result else 'FAILED'
+    testRunInfo = 'Test nr ' + str(index + 1) + ' - ' + resultInfo
 
     print(colored(testRunInfo, color))
     print('>>>', inputLine)
