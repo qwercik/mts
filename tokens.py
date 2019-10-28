@@ -12,3 +12,11 @@ tokensTypes = {
     'universal_quantifier': r'^(?:FORALL|∀)$',
     'existential_quantifier': r'^(?:EXISTS|∃)$'
 }
+
+tokensCategories = {
+    'value': ['constant', 'variable'],
+    'expression_with_parenthesis': ['function', 'predicate'],
+    'unary_operator': ['negation'],
+    'binary_operator': ['conjunction', 'disjunction', 'implication', 'equivalence', 'exclusionary_alternative'],
+    'quantifier': ['universal_quantifier', 'existential_quantifier']
+}

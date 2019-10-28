@@ -3,7 +3,7 @@
 import re
 import sys
 import string
-from tokens import tokensTypes
+from tokens import tokensTypes, tokensCategories
 
 class IncorrectTokenError(Exception):
     pass
@@ -24,9 +24,17 @@ def parseRpn(rpnFormula):
     return parsedOutput
 
 def translateRpnToInfix(rpnFormula):
-    parsed = parseRpn(rpnFormula)
-    print(parsed)
-    return ''
+    stack = []
+    infixFormula = ''
+
+    parsedFormula = parseRpn(rpnFormula)
+    for symbol in parsedFormula:
+        for tokenCategory, types in tokensCategories.items():
+            if symbol['type'] in types:
+                print(symbol['data'], symbol['type'], tokenCategory)
+                break
+
+    return infixFormula
 
 def main():
     for line in sys.stdin:
