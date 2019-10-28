@@ -1,46 +1,14 @@
 tokensDescription = {
-    'constant': {
-        'regex': r'^[a-e]$'
-    },
-    'variable': {
-        'regex': r'^[A-Z]$'
-    },
-    'function': {
-        'regex': r'^[f-n]/\d$'
-    },
-    'predicate': {
-        'regex': r'^[p-z]/\d$'
-    },
-    'negation': {
-        'regex': r'^(?:NOT|~|¬)$',
-        'output': '~'
-    },
-    'conjunction': {
-        'regex': r'^(?:AND|&|∧)$',
-        'output': '&'
-    },
-    'disjunction': {
-        'regex': r'^(?:OR|\||∨)$',
-        'output': '|'
-    },
-    'implication': {
-        'regex': r'^(?:IMPLIES|→)$',
-        'output': '→'
-    },
-    'equivalence': {
-        'regex': r'^(?:IFF|↔)$',
-        'output': '↔'
-    },
-    'exclusionary_alternative': {
-        'regex': r'^(?:XOR|⊕)$',
-        'output': '⊕'
-    },
-    'universal_quantifier': {
-        'regex': r'^(?:FORALL|∀)$',
-        'output': '∀'
-    },
-    'existential_quantifier': {
-        'regex': r'^(?:EXISTS|∃)$',
-        'output': '∃'
-    }
+    'constant': r'^[a-e]$',
+    'variable': r'^[A-Z]$',
+    'function': r'^[f-n]/\d$',
+    'predicate': r'^[p-z]/\d$',
+    'negation': r'^(?:NOT|~|¬)$',
+    'conjunction': r'^(?:AND|&|∧)$',
+    'disjunction': r'^(?:OR|\||∨)$',
+    'implication': r'^(?:IMPLIES|→)$',
+    'equivalence': r'^(?:IFF|↔)$',
+    'exclusionary_alternative': r'^(?:XOR|⊕)$',
+    'universal_quantifier': r'^(?:FORALL|∀)$',
+    'existential_quantifier': r'^(?:EXISTS|∃)$'
 }

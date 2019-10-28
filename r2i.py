@@ -9,16 +9,16 @@ class IncorrectTokenError(Exception):
     pass
 
 def parseRpn(rpnFormula):
+    parsedOutput = []
+
     tokens = rpnFormula.split()
     for token in tokens:
-        matched = None
-        for tokenType, tokenDescription in tokensDescription.items():
-            matchResult = re.match(tokenDescription['regex'], token)
+        for tokenType, regex in tokensDescription.items():
+            matchResult = re.match(regex, token)
             if matchResult:
-                matched = tokenType
+                print(token, tokenType)
                 break
-
-        if not matched:
+        else:
             raise IncorrectTokenError(token)
 
     return ''
