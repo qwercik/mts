@@ -3,7 +3,7 @@
 import re
 import sys
 import string
-from tokens import tokensDescription
+from tokens import tokensTypes
 
 class IncorrectTokenError(Exception):
     pass
@@ -13,7 +13,7 @@ def parseRpn(rpnFormula):
 
     tokens = rpnFormula.split()
     for token in tokens:
-        for tokenType, regex in tokensDescription.items():
+        for tokenType, regex in tokensTypes.items():
             matchResult = re.findall(regex, token)
             if matchResult:
                 parsedOutput.append({ 'type': tokenType, 'data': matchResult[0] })
@@ -31,7 +31,10 @@ def translateRpnToInfix(rpnFormula):
 def main():
     for line in sys.stdin:
         rpnFormula = line.strip()
-        print(translateRpnToInfix(rpnFormula))
+        try:
+            print(translateRpnToInfix(rpnFormula))
+        except IncorrectTokenError as error:
+            print('Incorrect token', error)
 
 if __name__ == '__main__':
     main()

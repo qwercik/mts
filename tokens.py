@@ -1,4 +1,4 @@
-tokensDescription = {
+tokensTypes = {
     'constant': r'^[a-e]$',
     'variable': r'^[A-Z]$',
     'function': r'^([f-n])/(\d)$',
