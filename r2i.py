@@ -28,21 +28,22 @@ def translateRpnToInfix(rpnFormula):
             symbol = token['data']
             argument = stack.pop()
 
-            textOutput = symbol + ' ' + argument['data']
+            textOutput = '(' + symbol + ' ' + argument['data'] + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'binary_operator':
             symbol = token['data']
             stack, arguments = popFew(stack, 2)
 
-            textOutput = arguments[0]['data'] + ' ' + symbol + ' ' + arguments[1]['data']
+            textOutput = '(' + arguments[0]['data'] + ' ' + symbol + ' ' + arguments[1]['data'] + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'quantifier':
             symbol = token['data']
             stack, arguments = popFew(stack, 2)
 
-            textOutput = symbol + ' ' + arguments[0]['data'] + ' ' + arguments[1]['data']
+            textOutput = '(' + symbol + ' ' + arguments[0]['data'] + ' ' + arguments[1]['data'] + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
-        
+    
+    infixFormula = stack[0]['data']
     return infixFormula
 
 def main():
