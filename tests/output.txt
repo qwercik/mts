@@ -2,4 +2,3 @@ p(a)
 (EXISTS Z p(Z))
 (FORALL Z ((∃ X p(f(X, a))) → (FORALL Y p(Y, f(Z)))))
 (EXISTS Z (FORALL Y (EXISTS X (q(X, b, c) & (~ p(Z, f(Y)))))))
-
