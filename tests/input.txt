@@ -3,3 +3,5 @@ Z Z p/1 EXISTS
 Z X X a f/2 p/1 ∃ Y Y Z f/1 p/2 FORALL → FORALL
 Z Y X X b c q/3 Z Y f/1 p/2 ~ & EXISTS FORALL EXISTS
 X Y X Y p/2 Y X p/2 ~ AND X Y q/2 AND FORALL EXISTS
+X X p/1 X q/1 → FORALL ~ X X p/1 FORALL X X q/1 FORALL → →
+X Y X Y X Y p/6 Y X Y X Y X Y X q/7 EXISTS IFF NOT
