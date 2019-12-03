@@ -25,7 +25,8 @@ def translateRpnToInfix(rpnFormula):
 
             arguments = utilities.popSeveral(stack, arity)
             
-            textOutput = symbol + '(' + ', '.join(map(lambda arg: arg['data'], arguments)) + ')'
+            argumentsList = ', '.join(map(lambda arg: arg['data'], arguments))
+            textOutput = f'{symbol}({argumentsList})'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
             
             if arity == 0:
@@ -35,19 +36,27 @@ def translateRpnToInfix(rpnFormula):
             symbol = token['data']
             argument = stack.pop()
 
-            textOutput = '(' + symbol + ' ' + argument['data'] + ')'
+            argumentSymbol = argument['data']
+            textOutput = f'({symbol} {argumentSymbol})'
+
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'binary_operator':
             symbol = token['data']
             arguments = utilities.popSeveral(stack, 2)
+            
+            leftOperandSymbol = arguments[0]['data']
+            rightOperandSymbol = arguments[1]['data']
 
-            textOutput = '(' + arguments[0]['data'] + ' ' + symbol + ' ' + arguments[1]['data'] + ')'
+            textOutput = f'({leftOperandSymbol} {symbol} {rightOperandSymbol})'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'quantifier':
             symbol = token['data']
             arguments = utilities.popSeveral(stack, 2)
 
-            textOutput = '(' + symbol + ' ' + arguments[0]['data'] + ' ' + arguments[1]['data'] + ')'
+            variableSymbol = arguments[0]['data']
+            formula = arguments[1]['data']
+
+            textOutput = f'({symbol} {variableSymbol} {formula})'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
     
     if len(stack) != 1:
