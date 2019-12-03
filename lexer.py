@@ -41,7 +41,7 @@ def tokenizeRpn(rpnFormula):
                 })
                 break
         else:
-            raise IncorrectSymbolError(token)
+                raise IncorrectSymbolError(symbol)
 
     return tokens
 

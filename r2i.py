@@ -69,7 +69,8 @@ def main():
         except IncorrectFormulaError as formula:
             print('Incorrect formula', formula)
             sys.exit(EXIT_INCORRECT_FORMULA)
-        except:
+        except error:
+            print(error)
             print('Unknown error')
             sys.exit(EXIT_UNKNOWN_ERROR)
 
