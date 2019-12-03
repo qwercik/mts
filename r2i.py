@@ -6,6 +6,7 @@ import string
 import lexer
 import debug
 import utilities
+import exitcodes
 
 class IncorrectFormulaError(Exception):
     pass
