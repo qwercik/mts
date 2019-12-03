@@ -7,10 +7,6 @@ import lexer
 import debug
 import utilities
 
-EXIT_INCORRECT_SYMBOL = 1
-EXIT_INCORRECT_FORMULA = 2
-EXIT_UNKNOWN_ERROR = 255
-
 class IncorrectFormulaError(Exception):
     pass
 
@@ -65,11 +61,11 @@ def main():
             infixFormula = translateRpnToInfix(rpnFormula)
             print(infixFormula)
         except lexer.IncorrectSymbolError as symbol:
-            debug.error('Incorrect symbol ' + str(symbol), EXIT_INCORRECT_SYMBOL)
+            debug.error('Incorrect symbol ' + str(symbol), exitcodes.EXIT_INCORRECT_SYMBOL)
         except IncorrectFormulaError as formula:
-            debug.error('Incorrect formula ' + str(formula), EXIT_INCORRECT_FORMULA)
+            debug.error('Incorrect formula ' + str(formula), exitcodes.EXIT_INCORRECT_FORMULA)
         except:
-            debug.error('Unknown error. Report the developer', EXIT_UNKNOWN_ERROR)
+            debug.error('Unknown error. Report the developer', exitcodes.EXIT_UNKNOWN_ERROR)
 
 if __name__ == '__main__':
     main()
