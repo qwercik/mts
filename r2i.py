@@ -8,6 +8,8 @@ import debug
 import exitcodes
 import translator
 
+DEVELOPER_URL = 'https://github.com/qwercik/r2i'
+
 def main():
     for line in sys.stdin:
         rpnFormula = line.strip()
@@ -16,11 +18,11 @@ def main():
             infixFormula = translator.translateRpnToInfix(rpnFormula)
             print(infixFormula)
         except lexer.IncorrectSymbolError as symbol:
-            debug.error('Incorrect symbol ' + str(symbol), exitcodes.EXIT_INCORRECT_SYMBOL)
-        except IncorrectFormulaError as formula:
-            debug.error('Incorrect formula ' + str(formula), exitcodes.EXIT_INCORRECT_FORMULA)
+            debug.error('Incorrect symbol: ' + str(symbol), exitcodes.EXIT_INCORRECT_SYMBOL)
+        except translator.IncorrectFormulaError as formula:
+            debug.error('Incorrect formula: ' + str(formula), exitcodes.EXIT_INCORRECT_FORMULA)
         except:
-            debug.error('Unknown error. Report the developer', exitcodes.EXIT_UNKNOWN_ERROR)
+            debug.error(f'Unknown error. Report the developer ({DEVELOPER_URL})', exitcodes.EXIT_UNKNOWN_ERROR)
 
 if __name__ == '__main__':
     main()
