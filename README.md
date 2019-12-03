@@ -27,3 +27,9 @@ Output:
 (NOT (p(X, Y, X, Y, X, Y) IFF (EXISTS Y q(X, Y, X, Y, X, Y, X))))
 ```
 
+## Testing
+If you would like to test an app with some predefined tests, run script test.py
+```
+chmod +x test.py
+./test.py
+```
