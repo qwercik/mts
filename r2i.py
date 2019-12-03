@@ -4,6 +4,7 @@ import re
 import sys
 import string
 import lexer
+import debug
 
 EXIT_INCORRECT_SYMBOL = 1
 EXIT_INCORRECT_FORMULA = 2
@@ -13,6 +14,7 @@ def popFew(inputList, count):
     data = inputList[-count:]
     inputList = inputList[:-count]
     return (inputList, data)
+
 
 class IncorrectFormulaError(Exception):
     pass
@@ -31,6 +33,10 @@ def translateRpnToInfix(rpnFormula):
             
             textOutput = symbol + '(' + ', '.join(map(lambda arg: arg['data'], arguments)) + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
+            
+            if int(arity) == 0:
+                debug.warning('Predykat powinien mieć przynajmniej jeden argument')
+
         elif token['category'] == 'unary_operator':
             symbol = token['data']
             argument = stack.pop()
