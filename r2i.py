@@ -21,12 +21,14 @@ def translateRpnToInfix(rpnFormula):
             stack.append(token)
         elif token['category'] == 'expression_with_parenthesis':
             symbol, arity = token['data']
-            stack, arguments = utilities.popSeveral(stack, int(arity))
+            arity = int(arity)
+
+            arguments = utilities.popSeveral(stack, arity)
             
             textOutput = symbol + '(' + ', '.join(map(lambda arg: arg['data'], arguments)) + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
             
-            if int(arity) == 0:
+            if arity == 0:
                 debug.warning('Predykat powinien mieć przynajmniej jeden argument')
 
         elif token['category'] == 'unary_operator':
@@ -37,13 +39,13 @@ def translateRpnToInfix(rpnFormula):
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'binary_operator':
             symbol = token['data']
-            stack, arguments = utilities.popSeveral(stack, 2)
+            arguments = utilities.popSeveral(stack, 2)
 
             textOutput = '(' + arguments[0]['data'] + ' ' + symbol + ' ' + arguments[1]['data'] + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'quantifier':
             symbol = token['data']
-            stack, arguments = utilities.popSeveral(stack, 2)
+            arguments = utilities.popSeveral(stack, 2)
 
             textOutput = '(' + symbol + ' ' + arguments[0]['data'] + ' ' + arguments[1]['data'] + ')'
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
