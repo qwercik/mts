@@ -23,15 +23,15 @@ def translateRpnToInfix(rpnFormula):
             symbol, arity = token['data']
             arity = int(arity)
 
+            if arity == 0:
+                debug.warning('Predicate should have at least one argument')
+
             arguments = utilities.popSeveral(stack, arity)
             
             argumentsList = ', '.join(map(lambda arg: arg['data'], arguments))
-            textOutput = f'{symbol}({argumentsList})'
+            argumentsListInBrackets = f'({argumentsList})'
+            textOutput = f'{symbol}' + (argumentsListInBrackets if arity != 0 else '')
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
-            
-            if arity == 0:
-                debug.warning('Predykat powinien mieć przynajmniej jeden argument')
-
         elif token['category'] == 'unary_operator':
             symbol = token['data']
             argument = stack.pop()
