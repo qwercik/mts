@@ -5,6 +5,19 @@ import utilities
 class IncorrectFormulaError(Exception):
     pass
 
+class NestedPredicateError(Exception):
+    pass
+
+class NotEnoughArguments(Exception):
+    pass
+
+def predicateInText(text):
+    for letter in 'pqrstuvwxyz':
+        if letter in text:
+            return True
+
+    return False
+
 def translateRpnToInfix(rpnFormula):
     stack = []
     infixFormula = ''
@@ -20,10 +33,17 @@ def translateRpnToInfix(rpnFormula):
             if arity == 0:
                 debug.warning('Predicate should have at least one argument')
 
+            if len(stack) < arity:
+                raise NotEnoughArguments(rpnFormula)
+
             arguments = utilities.popSeveral(stack, arity)
             
             argumentsList = ', '.join(map(lambda arg: arg['data'], arguments))
             argumentsListInBrackets = f'({argumentsList})'
+
+            if predicateInText(argumentsList):
+                raise NestedPredicateError(rpnFormula)
+
             textOutput = f'{symbol}' + (argumentsListInBrackets if arity != 0 else '')
             stack.append({ 'type': 'text', 'category': 'text', 'data': textOutput })
         elif token['category'] == 'unary_operator':

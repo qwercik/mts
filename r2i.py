@@ -19,6 +19,10 @@ def main():
             print(infixFormula)
         except lexer.IncorrectSymbolError as symbol:
             debug.error('Incorrect symbol: ' + str(symbol), exitcodes.EXIT_INCORRECT_SYMBOL)
+        except translator.NestedPredicateError as formula:
+            debug.error('You nested a predicate in formula: ' + str(formula), exitcodes.EXIT_INCORRECT_FORMULA)
+        except translator.NotEnoughArguments as formula:
+            debug.error('You have not given valid amount of arguments in function/predicate: ' + str(formula), exitcodes.EXIT_INCORRECT_FORMULA)
         except translator.IncorrectFormulaError as formula:
             debug.error('Incorrect formula: ' + str(formula), exitcodes.EXIT_INCORRECT_FORMULA)
         except:
