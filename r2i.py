@@ -70,15 +70,11 @@ def main():
             infixFormula = translateRpnToInfix(rpnFormula)
             print(infixFormula)
         except lexer.IncorrectSymbolError as symbol:
-            print('Incorrect symbol', symbol)
-            sys.exit(EXIT_INCORRECT_SYMBOL)
+            debug.error('Incorrect symbol ' + str(symbol), EXIT_INCORRECT_SYMBOL)
         except IncorrectFormulaError as formula:
-            print('Incorrect formula', formula)
-            sys.exit(EXIT_INCORRECT_FORMULA)
-        except error:
-            print(error)
-            print('Unknown error')
-            sys.exit(EXIT_UNKNOWN_ERROR)
+            debug.error('Incorrect formula ' + str(formula), EXIT_INCORRECT_FORMULA)
+        except:
+            debug.error('Unknown error. Report the developer', EXIT_UNKNOWN_ERROR)
 
 if __name__ == '__main__':
     main()
