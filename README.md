@@ -27,6 +27,9 @@ Output:
 (NOT (p(X, Y, X, Y, X, Y) IFF (EXISTS Y q(X, Y, X, Y, X, Y, X))))
 ```
 
+## Language
+If you would like to change app language, set *lang* value in file config.json. Supported languages: en, pl.
+
 ## Testing
 If you would like to test an app with some predefined tests, run script test.py
 ```
