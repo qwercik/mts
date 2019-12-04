@@ -25,7 +25,7 @@ def main():
         lang = json.loads(open(CONFIG_FILE).read())['lang']
         translations = readTranslations(lang)
     except:
-        debug.error('You have not typed a valid app language in config.json')
+        debug.error('You have not typed a valid app language in config.json', exitcodes.EXIT_INCORRECT_CONFIG)
 
 
     for line in sys.stdin:
