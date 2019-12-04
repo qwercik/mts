@@ -1,0 +1,22 @@
+{
+	"incorrect_symbol": {
+		"pl": "Nieznany symbol",
+		"en": "Incorrect symbol"
+	},
+	"predicate_nested": {
+		"pl": "Predykat jest zagnieżdżony w innym predykacie",
+		"en": "You nested a predicate in an another predicate"
+	},
+	"not_valid_arity": {
+		"pl": "Podano zbyt dużo argumentów w funkcji/predykacie",
+		"en": "You have not given valid amount of arguments in function/predicate"
+	},
+	"incorrect_formula": {
+		"pl": "Niepoprawna formuła rachunku predykatów pierwszego rzędu",
+		"en": "Incorrect first-order-logic formula"
+	},
+	"unknown_error": {
+		"pl": "Nieznany błąd. Skontaktuj się z autorem programu",
+		"en": "Unknown error ocurred. Report the developer"
+	}
+}
