@@ -1,6 +1,6 @@
 import re
 
-class IncorrectSymbolError(Exception):
+class UnrecognizableSymbolError(Exception):
     pass
 
 tokensTypes = {
@@ -18,15 +18,7 @@ tokensTypes = {
     'existential_quantifier': r'^(?:EXISTS|∃)$'
 }
 
-tokensCategories = {
-    'value': ['constant', 'variable'],
-    'expression_with_parenthesis': ['function', 'predicate'],
-    'unary_operator': ['negation'],
-    'binary_operator': ['conjunction', 'disjunction', 'implication', 'equivalence', 'exclusionary_alternative'],
-    'quantifier': ['universal_quantifier', 'existential_quantifier']
-}
-
-def tokenizeRpn(rpnFormula):
+def tokenizeRpnFormula(rpnFormula):
     tokens = []
 
     symbols = rpnFormula.split()
@@ -36,16 +28,12 @@ def tokenizeRpn(rpnFormula):
             if matchResult:
                 tokens.append({
                     'type': tokenType,
-                    'category': tokenCategory(tokenType),
+                    'symbol': symbol,
                     'data': matchResult[0]
                 })
                 break
         else:
-                raise IncorrectSymbolError(symbol)
+                raise UnrecognizableSymbolError(symbol)
 
     return tokens
 
-def tokenCategory(tokenType):
-    for tokenCategory, types in tokensCategories.items():
-        if tokenType in types:
-            return tokenCategory
