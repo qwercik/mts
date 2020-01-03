@@ -26,11 +26,11 @@ def main():
             nestedPredicateName, currentTokenType, currentTokenName = e.args[0]
             error(f'Predicate {nestedPredicateName} nested in {currentTokenType} {currentTokenName}')
         except parser.ArgumentOfOperatorShouldBeALogicalFormulaError as operator:
-            error(f'Argument of {operator} operator should be a logical formula')
+            error(f'Argument of {operator} operator must be a logical formula')
         except parser.FirstArgumentOfQuantifierShouldBeAVariableError as quantifierType:
-            error(f'First argument of {quantifierType} quantifier should be a variable')
+            error(f'First argument of {quantifierType} must be a variable')
         except parser.SecondArgumentOfQuantifierShouldBeALogicalFormulaError as quantifierType:
-            error(f'Second argument of {quantifierType} quantifier should be a logical formula')
+            error(f'Second argument of {quantifierType} must be a logical formula')
         except parser.IncorrectArgumentsNumberError as tokenType:
             error(f'Incorrect arguments number in {tokenType}')
         except:

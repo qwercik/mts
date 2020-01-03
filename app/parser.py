@@ -77,10 +77,10 @@ def createNodeWithCurrentToken(token, stack):
         variable = stack.pop()
         
         if variable['type'] != 'variable':
-            raise FirstArgumentOfQuantifierShouldBeAVariableError(syntaxTree['type'])
+            raise FirstArgumentOfQuantifierShouldBeAVariableError(token['type'])
 
         if not isLogicalFormula(formula):
-            raise SecondArgumentOfQuantifierShouldBeALogicalFormulaError(syntaxTree['type'])
+            raise SecondArgumentOfQuantifierShouldBeALogicalFormulaError(token['type'])
 
         return {
             'variable': variable,
