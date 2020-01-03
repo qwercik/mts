@@ -22,6 +22,9 @@ def tokenTypeCategory(token):
 class IncorrectArgumentsNumberError(Exception):
     pass
 
+class EmptyFormula(Exception):
+    pass
+
 class NestedPredicateError(Exception):
     pass
 
@@ -109,8 +112,10 @@ def parse(tokensStream):
             **node,
         })
 
-    if len(stack) != 1:
-        raise IncorrectArgumentsNumberError('formula')
+    if len(stack) > 1:
+        raise IncorrectArgumentsNumberError(stack[-1]['type'])
+    elif len(stack) == 0:
+        raise EmptyFormula()
 
     return stack.pop()
 

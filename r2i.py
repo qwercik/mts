@@ -33,6 +33,8 @@ def main():
             error(f'Second argument of {quantifierType} must be a logical formula')
         except parser.IncorrectArgumentsNumberError as tokenType:
             error(f'Incorrect arguments number in {tokenType}')
+        except parser.EmptyFormula:
+            error(f'Empty formula')
         except:
             panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
 
