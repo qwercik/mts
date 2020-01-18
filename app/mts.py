@@ -52,7 +52,8 @@ def extractAtomFromLiteral(formula):
     return formula['arguments'][0]
 
 def areLiteralsComplementary(literal1, literal2):
-    return compareFormulas(
+    # One is negation and another no
+    return literal1['type'] != literal2['type'] and compareFormulas(
         extractAtomFromLiteral(literal1),
         extractAtomFromLiteral(literal2)
     )
@@ -78,6 +79,60 @@ def detectRuleType(syntaxTree):
         else:
             return gammaDeltaRules[syntaxTree['type']]
 
+def negateFormula(syntaxTree):
+    return {
+        'type': 'negation',
+        'category': 'unary_operator',
+        'symbol': '~',
+        'arguments': [syntaxTree]
+    }
+
+def createImplication(antecedentTree, consequentTree):
+    return {
+        'type': 'implication',
+        'category': 'binary_operator',
+        'symbol': 'IMPLIES',
+        'arguments': [antecedentTree, consequentTree]
+    }
+
+def runAlfaRule(syntaxTree):
+    if syntaxTree['type'] == 'negation':
+        child = syntaxTree['arguments'][0]
+        arguments = syntaxTree['arguments'][0]['arguments']
+
+        if child['type'] == 'disjunction':
+            return [
+                negateFormula(arguments[0]),
+                negateFormula(arguments[1])
+            ]
+        elif child['type'] == 'implication':
+            return [
+                arguments[0],
+                negateFormula(arguments[1])
+            ]
+        elif child['type'] == 'negation':
+            return [
+                arguments[0]
+            ]
+        elif child['type'] == 'exclusionary_alternative':
+            return [
+                createImplication(arguments[0], arguments[1]),
+                createImplication(arguments[1], arguments[0])
+            ]
+    else:
+        arguments = syntaxTree['arguments']
+
+        if syntaxTree['type'] == 'conjunction':
+            return [
+                arguments[0],
+                arguments[1]
+            ]
+        elif syntaxTree['type'] == 'equivalence':
+            return [
+                createImplication(arguments[0], arguments[1]),
+                createImplication(arguments[1], arguments[0])
+            ]
+        
 
 def isSatisfiable(syntaxTree, constants=[]):
     if not constants:
@@ -93,7 +148,7 @@ def isSatisfiable(syntaxTree, constants=[]):
             'delta': [],
         }
         
-        for formula in node:
+        for index, formula in enumerate(node):
             if isLiteral(formula):
                 if existComplementaryLiteral(formula, literals):
                     return False
@@ -101,18 +156,18 @@ def isSatisfiable(syntaxTree, constants=[]):
                 literals.append(formula)
             else:
                 ruleType = detectRuleType(formula) 
-                formulasTypes[ruleType].append(formula)
-
+                formulasTypes[ruleType].append(index)
+        
         # Priority of running rules:
         if formulasTypes['alfa']:
-            pass
+            node += runAlfaRule(node.pop(formulasTypes['alfa'][0]))
         elif formulasTypes['delta']:
             pass
         elif formulasTypes['beta']:
             pass
         elif formulasTypes['gamma']:
             pass
-
-        return False
+        else:
+            return True
 
 

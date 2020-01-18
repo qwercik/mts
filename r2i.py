@@ -19,8 +19,8 @@ def main():
             syntaxTree = parser.parse(tokensStream)
             infixFormula = render.renderInfix(syntaxTree)
 
-            print(infixFormula)
-            print(mts.isSatisfiable(syntaxTree))
+            print('Checking formula:', infixFormula)
+            print('Satisfiable' if mts.isSatisfiable(syntaxTree) else 'Not satisfiable')
 
         except lexer.UnrecognizableSymbolError as symbol:
             error(f'Unrecognizable symbol {symbol}')
@@ -37,9 +37,8 @@ def main():
             error(f'Incorrect arguments number in {tokenType}')
         except parser.EmptyFormula:
             error(f'Empty formula')
-        except Exception as e:
-            print(e)
-            panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
+        #except:
+        #    panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
 
 if __name__ == '__main__':
     main()
