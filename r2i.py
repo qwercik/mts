@@ -5,7 +5,7 @@ import sys
 import string
 import json
 
-from app import lexer, parser, render
+from app import lexer, parser, render, mts
 from app.debug import error, panic
 
 DEVELOPER_URL = 'https://github.com/qwercik/r2i'
@@ -17,6 +17,9 @@ def main():
         try:
             tokensStream = lexer.tokenizeRpnFormula(rpnFormula)
             syntaxTree = parser.parse(tokensStream)
+            syntaxTree = mts.removeRedundantNegations(syntaxTree) #TODO: remove
+            
+            print(f'Found constants: ', mts.findAllConstants(syntaxTree))
             infixFormula = render.renderInfix(syntaxTree)
 
             print(infixFormula)
@@ -35,7 +38,8 @@ def main():
             error(f'Incorrect arguments number in {tokenType}')
         except parser.EmptyFormula:
             error(f'Empty formula')
-        except:
+        except Exception as e:
+            print(e)
             panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
 
 if __name__ == '__main__':
