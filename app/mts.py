@@ -1,3 +1,17 @@
+alfaBetaRules = {
+    # Double negation is also alfa
+    'conjunction': 'alfa',
+    'equivalence': 'alfa',
+    'disjunction': 'beta',
+    'implication': 'beta',
+    'exclusionary_alternative': 'beta'
+}
+
+gammaDeltaRules = {
+    'universal_quantifier': 'gamma',
+    'existential_quantifier': 'delta'
+}
+
 def findAllConstants(syntaxTree):
     if syntaxTree['type'] == 'variable':
         return []
@@ -43,41 +57,42 @@ def areLiteralsComplementary(literal1, literal2):
         extractAtomFromLiteral(literal2)
     )
 
-def lookThroughNode(node):
-    literals = []
-    for index, formula in enumerate(node):
-        node[index] = removeRedundantNegations(formula)
-
-        if isLiteral(formula):
-            for literal in literals:
-                if areLiteralsComplementary(formula, literal):
-                    print('Znalazłem literały komplementarne!')
-                    break
-            else:
-                literals.push(formula)
-
 def existComplementaryLiteral(literal, listOfLiterals):
     for currentLiteral in listOfLiterals:
         if areLiteralsComplementary(currentLiteral, literal):
             return True
 
     return False
-            
+
+def detectRuleType(syntaxTree):
+    if syntaxTree['type'] == 'negation':
+        if syntaxTree['arguments'][0]['type'] == 'negation':
+            return 'alfa'
+        elif syntaxTree['arguments'][0]['type'] in alfaBetaRules:
+            return 'beta' if alfaBetaRules[syntaxTree['arguments'][0]['type']] == 'alfa' else 'alfa'
+        else:
+            return 'delta' if gammaDeltaRules[syntaxTree['arguments'][0]['type']] == 'gamma' else 'gamma'
+    else:
+        if syntaxTree['type'] in alfaBetaRules:
+            return alfaBetaRules[syntaxTree['type']]
+        else:
+            return gammaDeltaRules[syntaxTree['type']]
+
+
 def isSatisfiable(syntaxTree, constants=[]):
-    syntaxTree = removeRedundantNegations(syntaxTree)
     if not constants:
         constants = findAllConstants(syntaxTree)
     
     node = [syntaxTree]
-    literals = []
-    formulasTypes = {
-        'alfa': [],
-        'beta': [],
-        'gamma': [],
-        'delta': [],
-    }
-
     while True:
+        literals = []
+        formulasTypes = {
+            'alfa': [],
+            'beta': [],
+            'gamma': [],
+            'delta': [],
+        }
+        
         for formula in node:
             if isLiteral(formula):
                 if existComplementaryLiteral(formula, literals):
@@ -85,8 +100,19 @@ def isSatisfiable(syntaxTree, constants=[]):
                 
                 literals.append(formula)
             else:
-                # Detect formula type
-                pass
+                ruleType = detectRuleType(formula) 
+                formulasTypes[ruleType].append(formula)
 
+        # Priority of running rules:
+        if formulasTypes['alfa']:
+            pass
+        elif formulasTypes['delta']:
+            pass
+        elif formulasTypes['beta']:
+            pass
+        elif formulasTypes['gamma']:
+            pass
+
+        return False
 
 
