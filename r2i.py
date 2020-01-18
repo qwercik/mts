@@ -11,12 +11,26 @@ from app.debug import error, panic
 DEVELOPER_URL = 'https://github.com/qwercik/r2i'
 
 def main():
+    line1 = input().strip()
+    syntaxTree1 = parser.parse(lexer.tokenizeRpnFormula(line1))
+
+    line2 = input().strip()
+    syntaxTree2 = parser.parse(lexer.tokenizeRpnFormula(line2))
+
+    print(render.renderInfix(syntaxTree1))
+    print(render.renderInfix(syntaxTree2))
+
+    print(mts.compareFormulas(syntaxTree1, syntaxTree2))
+
     for line in sys.stdin:
         rpnFormula = line.strip()
         
         try:
             tokensStream = lexer.tokenizeRpnFormula(rpnFormula)
             syntaxTree = parser.parse(tokensStream)
+
+            import pprint
+            pprint.pprint(syntaxTree)
             syntaxTree = mts.removeRedundantNegations(syntaxTree) #TODO: remove
             
             print(f'Found constants: ', mts.findAllConstants(syntaxTree))
