@@ -1,3 +1,6 @@
+from app.debug import *
+from app import render
+
 alfaBetaRules = {
     # Double negation is also alfa
     'conjunction': 'alfa',
@@ -11,6 +14,8 @@ gammaDeltaRules = {
     'universal_quantifier': 'gamma',
     'existential_quantifier': 'delta'
 }
+
+constantsNames = ['a', 'b', 'c', 'd', 'e']
 
 def findAllConstants(syntaxTree):
     if syntaxTree['type'] == 'variable':
@@ -132,12 +137,28 @@ def runAlfaRule(syntaxTree):
                 createImplication(arguments[0], arguments[1]),
                 createImplication(arguments[1], arguments[0])
             ]
-        
 
-def isSatisfiable(syntaxTree, constants=[]):
-    if not constants:
-        constants = findAllConstants(syntaxTree)
+def substituteVariable(syntaxTree, variable, constant):
+    print('O, widzę że próbujesz coś tu podstawić :D W sensie', variable, 'na', constant)
+    print(syntaxTree['type'])
+    if syntaxTree['type'] == 'variable' and syntaxTree['name'] == variable:
+        print('Zamieniam', syntaxTree['name'], 'na', constant)
+        syntaxTree['type'] = 'constant'
+        syntaxTree['name'] = constant
+        syntaxTree['symbol'] = constant
+    elif syntaxTree['category'] in ['expression_with_parenthesis', 'unary_operator', 'binary_operator']:
+        for argument in syntaxTree['arguments']:
+            substituteVariable(argument, variable, constant)
+    elif syntaxTree['category'] == 'quantifier' and syntaxTree['variable']['name'] != variable:
+        substituteVariable(syntaxTree['formula'], variable, constant)
+
+def isSatisfiable(syntaxTree, usedConstants=[]):
+    if not usedConstants:
+        usedConstants = findAllConstants(syntaxTree) or constantsNames[:1]
+        usedConstants.sort()
     
+    warning('Wszystkie stałe: ', usedConstants)
+
     node = [syntaxTree]
     while True:
         literals = []
@@ -160,14 +181,34 @@ def isSatisfiable(syntaxTree, constants=[]):
         
         # Priority of running rules:
         if formulasTypes['alfa']:
-            node += runAlfaRule(node.pop(formulasTypes['alfa'][0]))
+            print('Wywołuję formułę alfa')
+            formula = node.pop(formulasTypes['alfa'].pop())
+            node += runAlfaRule(formula)
         elif formulasTypes['delta']:
-            pass
+            print('Wywołuję formułę delta.')
+            
+            newConstant = None
+            for name in constantsNames:
+                if not name in usedConstants:
+                    newConstant = name
+                    break
+            else:
+                error('Nie mogę znaleźć nowej nazwy zmiennej!')
+            
+            v = formula['variable']['name']
+            print(f'Podstawię stałą {newConstant} pod zmienną {v}')
+            
+            formula = node.pop(formulasTypes['delta'].pop())
+            print('Formuła przed podstawieniem:', render.renderInfix(formula))
+            substituteVariable(formula['formula'], formula['variable']['name'], newConstant)
+            print('Formuła po podstawieniu:', render.renderInfix(formula['formula']))
+
+            node.append(formula['formula'])
         elif formulasTypes['beta']:
             pass
         elif formulasTypes['gamma']:
             pass
         else:
             return True
-
+        
 
