@@ -20,7 +20,7 @@ def main():
             infixFormula = render.renderInfix(syntaxTree)
 
             print('Checking formula:', infixFormula)
-            print('Satisfiable' if mts.isSatisfiable(syntaxTree) else 'Not satisfiable')
+            print('Satisfiable' if mts.checkFormulaSatisfiable(syntaxTree) else 'Not satisfiable')
 
         except lexer.UnrecognizableSymbolError as symbol:
             error(f'Unrecognizable symbol {symbol}')

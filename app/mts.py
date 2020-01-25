@@ -138,6 +138,38 @@ def runAlfaRule(syntaxTree):
                 createImplication(arguments[1], arguments[0])
             ]
 
+def runBetaRule(syntaxTree):
+    if syntaxTree['type'] == 'negation':
+        child = syntaxTree['arguments'][0]
+        arguments = syntaxTree['arguments'][0]['arguments']
+
+        if child['type'] == 'conjunction':
+            return [
+                negateFormula(arguments[0]),
+                negateFormula(arguments[1])
+            ]
+        elif child['type'] == 'equivalence':
+            return [
+                negateFormula(createImplication(arguments[0], arguments[1])),
+                negateFormula(createImplication(arguments[1], arguments[0]))
+            ]
+    else:
+        arguments = syntaxTree['arguments']
+
+        if syntaxTree['type'] == 'disjunction':
+            return arguments
+        elif syntaxTree['type'] == 'implication':
+            return [
+                negateFormula(arguments[0]),
+                arguments[1]
+            ]
+        elif syntaxTree['type'] == 'exclusionary_alternative':
+            return [
+                negateFormula(createImplication(arguments[0], arguments[1])),
+                negateFormula(createImplication(arguments[1], arguments[0]))
+            ]
+
+
 def substituteVariable(syntaxTree, variable, constant):
     print('O, widzę że próbujesz coś tu podstawić :D W sensie', variable, 'na', constant)
     print(syntaxTree['type'])
@@ -152,14 +184,16 @@ def substituteVariable(syntaxTree, variable, constant):
     elif syntaxTree['category'] == 'quantifier' and syntaxTree['variable']['name'] != variable:
         substituteVariable(syntaxTree['formula'], variable, constant)
 
-def isSatisfiable(syntaxTree, usedConstants=[]):
-    if not usedConstants:
-        usedConstants = findAllConstants(syntaxTree) or constantsNames[:1]
-        usedConstants.sort()
-    
-    warning('Wszystkie stałe: ', usedConstants)
+def checkFormulaSatisfiable(syntaxTree):
+    usedConstants = findAllConstants(syntaxTree) or constantsNames[:1]
+    usedConstants.sort()
+    warning('Wszystkie stałe:', usedConstants)
 
     node = [syntaxTree]
+    return isSatisfiable(node, usedConstants)
+
+
+def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
     while True:
         literals = []
         formulasTypes = {
@@ -195,17 +229,27 @@ def isSatisfiable(syntaxTree, usedConstants=[]):
             else:
                 error('Nie mogę znaleźć nowej nazwy zmiennej!')
             
+            formula = node.pop(formulasTypes['delta'].pop())
             v = formula['variable']['name']
             print(f'Podstawię stałą {newConstant} pod zmienną {v}')
             
-            formula = node.pop(formulasTypes['delta'].pop())
             print('Formuła przed podstawieniem:', render.renderInfix(formula))
             substituteVariable(formula['formula'], formula['variable']['name'], newConstant)
             print('Formuła po podstawieniu:', render.renderInfix(formula['formula']))
 
             node.append(formula['formula'])
         elif formulasTypes['beta']:
-            pass
+            print('Wywołuję regułę beta')
+
+            formula = node.pop(formulasTypes['beta'].pop())
+            result = runBetaRule(formula)
+
+            for currentFormula in result:
+                if isSatisfiable([*node, currentFormula], usedConstants):
+                    return True
+
+            return False
+
         elif formulasTypes['gamma']:
             pass
         else:
