@@ -251,7 +251,24 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
             return False
 
         elif formulasTypes['gamma']:
-            pass
+            for index in formulasTypes['gamma']:
+                formula = node[index]
+                
+                times = 0
+                for constant in usedConstants:
+                    if constant not in runnedGammaRules:
+                        formulaCopy = formula['formula'].copy()
+                        substituteVariable(formulaCopy, formula['variable']['name'], constant)
+                        node.append(formulaCopy)
+                        
+                        runnedGammaRules.append(constant)
+                        times += 1
+                if times > 0:
+                    break
+            else:
+                print('UWAGA, NIE JESTEM PEWNY ODPOWIEDZI')
+                return True #???
+            
         else:
             return True
         
