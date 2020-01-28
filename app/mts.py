@@ -182,15 +182,26 @@ def substituteVariable(syntaxTree, variable, constant):
     elif syntaxTree['category'] == 'quantifier' and syntaxTree['variable']['name'] != variable:
         substituteVariable(syntaxTree['formula'], variable, constant)
 
+def printMtsNode(mtsNode, usedConstants):
+    formulas = ', '.join(map(lambda el: render.renderInfix(el), mtsNode))
+    constants = ', '.join(usedConstants)
+    return f'({{{formulas}}}, {{{constants}}})'
+
 def checkFormulaSatisfiable(syntaxTree):
     usedConstants = findAllConstants(syntaxTree) or constantsNames[:1]
     usedConstants.sort()
 
-    node = [syntaxTree]
-    return isSatisfiable(node, usedConstants)
+    mtsNode = [syntaxTree]
+    return isSatisfiable(mtsNode, usedConstants)
 
 
-def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
+def isSatisfiable(mtsNode, usedConstants, runnedGammaRules=[], subtreeIdentifier=[]):
+    runnedGammaRules = runnedGammaRules.copy()
+    if subtreeIdentifier:
+        print('Podgałąź', '-'.join(map(str, subtreeIdentifier)))
+    
+    print(printMtsNode(mtsNode, usedConstants))
+
     while True:
         literals = []
         formulasTypes = {
@@ -200,7 +211,7 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
             'delta': [],
         }
         
-        for index, formula in enumerate(node):
+        for index, formula in enumerate(mtsNode):
             if isLiteral(formula):
                 if existComplementaryLiteral(formula, literals):
                     return False
@@ -213,8 +224,8 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
         # Priority of running rules:
         if formulasTypes['alfa']:
             print('Uruchamiam formułę alfa')
-            formula = node.pop(formulasTypes['alfa'].pop())
-            node += runAlfaRule(formula)
+            formula = mtsNode.pop(formulasTypes['alfa'].pop())
+            mtsNode += runAlfaRule(formula)
         elif formulasTypes['delta']:
             print('Uruchamiam regułę delta')
             newConstant = None
@@ -224,49 +235,51 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
                     usedConstants.append(newConstant)
                     break
             else:
-                error('Nie mogę znaleźć nowej nazwy zmiennej!')
+                error('Nie mogę znaleźć nowej nazwy dla stałej!')
             
-            formula = node.pop(formulasTypes['delta'].pop())
-            substituteVariable(formula['formula'], formula['variable']['name'], newConstant)
+            formula = mtsNode.pop(formulasTypes['delta'].pop())
+            internalFormula = formula['arguments'][0] if formula['category'] == 'unary_operator' else formula
 
-            node.append(formula['formula'])
+            substituteVariable(internalFormula['formula'], internalFormula['variable']['name'], newConstant)
+            
+            mtsNode.append(negateFormula(internalFormula['formula']) if formula['category'] == 'unary_operator' else internalFormula['formula'])
         elif formulasTypes['beta']:
             print('Uruchamiam regułę beta')
-            formula = node.pop(formulasTypes['beta'].pop())
+            formula = mtsNode.pop(formulasTypes['beta'].pop())
             result = runBetaRule(formula)
 
-            for currentFormula in result:
-                if isSatisfiable([*node, currentFormula], usedConstants):
+            for index, currentFormula in enumerate(result):
+                print()
+                if isSatisfiable([*mtsNode, currentFormula], usedConstants, subtreeIdentifier=subtreeIdentifier + [index]):
                     return True
-
+                else:    
+                    print('Gałąź niespełnialna')
+            
+            print()
             return False
 
         elif formulasTypes['gamma']:
             print('Uruchamiam regułę gamma')
             for index in formulasTypes['gamma']:
-                formula = node[index] if node[index]['type'] != 'negation' else node[index]['arguments'][0]
+                formula = mtsNode[index] if mtsNode[index]['type'] != 'negation' else mtsNode[index]['arguments'][0]
                 
                 times = 0
                 for constant in usedConstants:
                     if constant not in runnedGammaRules:
                         formulaCopy = copy.deepcopy(formula['formula'])
                         substituteVariable(formulaCopy, formula['variable']['name'], constant)
-                        node.append(formulaCopy)
+                        mtsNode.append(negateFormula(formulaCopy) if mtsNode[index]['type'] == 'negation' else formulaCopy)
                         
                         runnedGammaRules.append(constant)
                         times += 1
                 if times > 0:
                     break
             else:
+                print(printMtsNode(mtsNode, usedConstants))
                 return True #???
             
         else:
+            print(printMtsNode(mtsNode, usedConstants))
             return True
-        
-        print('({', end='')
-        print(', '.join(map(lambda el: render.renderInfix(el), node)), end='')
-        print('}, {', end='')
-        print(', '.join(usedConstants), end='')
-        print('})\n')
 
-
+        print(printMtsNode(mtsNode, usedConstants))
