@@ -1,5 +1,6 @@
 from app.debug import *
 from app import render
+import copy
 
 alfaBetaRules = {
     # Double negation is also alfa
@@ -211,13 +212,16 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
         
         # Priority of running rules:
         if formulasTypes['alfa']:
+            print('Uruchamiam formułę alfa')
             formula = node.pop(formulasTypes['alfa'].pop())
             node += runAlfaRule(formula)
         elif formulasTypes['delta']:
+            print('Uruchamiam regułę delta')
             newConstant = None
             for name in constantsNames:
                 if not name in usedConstants:
                     newConstant = name
+                    usedConstants.append(newConstant)
                     break
             else:
                 error('Nie mogę znaleźć nowej nazwy zmiennej!')
@@ -227,6 +231,7 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
 
             node.append(formula['formula'])
         elif formulasTypes['beta']:
+            print('Uruchamiam regułę beta')
             formula = node.pop(formulasTypes['beta'].pop())
             result = runBetaRule(formula)
 
@@ -237,13 +242,14 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
             return False
 
         elif formulasTypes['gamma']:
+            print('Uruchamiam regułę gamma')
             for index in formulasTypes['gamma']:
                 formula = node[index] if node[index]['type'] != 'negation' else node[index]['arguments'][0]
                 
                 times = 0
                 for constant in usedConstants:
                     if constant not in runnedGammaRules:
-                        formulaCopy = formula['formula'].copy()
+                        formulaCopy = copy.deepcopy(formula['formula'])
                         substituteVariable(formulaCopy, formula['variable']['name'], constant)
                         node.append(formulaCopy)
                         
@@ -257,4 +263,10 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
         else:
             return True
         
+        print('({', end='')
+        print(', '.join(map(lambda el: render.renderInfix(el), node)), end='')
+        print('}, {', end='')
+        print(', '.join(usedConstants), end='')
+        print('})\n')
+
 
