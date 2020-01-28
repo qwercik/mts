@@ -7,6 +7,8 @@ operatorsPriority = {
     'implication': 0
 }
 
+associativeOperators = ['conjunction', 'disjunction', 'exclusionary_alternative']
+
 def operatorPriority(operator):
     return operatorsPriority[operator]
 
@@ -25,10 +27,10 @@ def renderInfix(syntaxTree):
         return f'{name}({argumentsList})'
     elif category == 'unary_operator':
         operator = syntaxTree['symbol']
-        argumentString = renderInfix(syntaxTree['arguments'][0])
         argument = syntaxTree['arguments'][0]
+        argumentString = renderInfix(argument)
         
-        if argument['category'] == 'unary_operator' or (argument['category'] == 'binary_operator' and operatorPriority(argument['type']) > operatorPriority(syntaxTree['type'])):
+        if argument['category'] in ['unary_operator', 'binary_operator']:
             argumentString = f'({argumentString})'
         
         return f'{operator} {argumentString}'
@@ -38,7 +40,8 @@ def renderInfix(syntaxTree):
 
         for index, argumentString in enumerate(argumentsStrings):
             argument = syntaxTree['arguments'][index]
-            if argument['category'] == 'unary_operator' or (argument['category'] == 'binary_operator' and operatorPriority(argument['type']) > operatorPriority(syntaxTree['type'])):
+            
+            if argument['category'] == 'binary_operator' and (argument['type'] != syntaxTree['type'] or not argument['type'] in associativeOperators):
                 argumentsStrings[index] = f'({argumentString})'
         
         return f'{argumentsStrings[0]} {operator} {argumentsStrings[1]}'
@@ -47,7 +50,7 @@ def renderInfix(syntaxTree):
         variable = renderInfix(syntaxTree['variable'])
         formula = renderInfix(syntaxTree['formula'])
 
-        if syntaxTree['formula']['category'] in ['unary_operator', 'binary_operator']:
+        if syntaxTree['formula']['category'] == 'binary_operator':
             formula = f'({formula})'
 
         return f'{quantifier} {variable} {formula}'

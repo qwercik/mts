@@ -171,10 +171,7 @@ def runBetaRule(syntaxTree):
 
 
 def substituteVariable(syntaxTree, variable, constant):
-    print('O, widzę że próbujesz coś tu podstawić :D W sensie', variable, 'na', constant)
-    print(syntaxTree['type'])
     if syntaxTree['type'] == 'variable' and syntaxTree['name'] == variable:
-        print('Zamieniam', syntaxTree['name'], 'na', constant)
         syntaxTree['type'] = 'constant'
         syntaxTree['name'] = constant
         syntaxTree['symbol'] = constant
@@ -187,7 +184,6 @@ def substituteVariable(syntaxTree, variable, constant):
 def checkFormulaSatisfiable(syntaxTree):
     usedConstants = findAllConstants(syntaxTree) or constantsNames[:1]
     usedConstants.sort()
-    warning('Wszystkie stałe:', usedConstants)
 
     node = [syntaxTree]
     return isSatisfiable(node, usedConstants)
@@ -215,12 +211,9 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
         
         # Priority of running rules:
         if formulasTypes['alfa']:
-            print('Wywołuję formułę alfa')
             formula = node.pop(formulasTypes['alfa'].pop())
             node += runAlfaRule(formula)
         elif formulasTypes['delta']:
-            print('Wywołuję formułę delta.')
-            
             newConstant = None
             for name in constantsNames:
                 if not name in usedConstants:
@@ -230,17 +223,10 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
                 error('Nie mogę znaleźć nowej nazwy zmiennej!')
             
             formula = node.pop(formulasTypes['delta'].pop())
-            v = formula['variable']['name']
-            print(f'Podstawię stałą {newConstant} pod zmienną {v}')
-            
-            print('Formuła przed podstawieniem:', render.renderInfix(formula))
             substituteVariable(formula['formula'], formula['variable']['name'], newConstant)
-            print('Formuła po podstawieniu:', render.renderInfix(formula['formula']))
 
             node.append(formula['formula'])
         elif formulasTypes['beta']:
-            print('Wywołuję regułę beta')
-
             formula = node.pop(formulasTypes['beta'].pop())
             result = runBetaRule(formula)
 
@@ -252,7 +238,7 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
 
         elif formulasTypes['gamma']:
             for index in formulasTypes['gamma']:
-                formula = node[index]
+                formula = node[index] if node[index]['type'] != 'negation' else node[index]['arguments'][0]
                 
                 times = 0
                 for constant in usedConstants:
@@ -266,7 +252,6 @@ def isSatisfiable(node, usedConstants, runnedGammaRules=[]):
                 if times > 0:
                     break
             else:
-                print('UWAGA, NIE JESTEM PEWNY ODPOWIEDZI')
                 return True #???
             
         else:
