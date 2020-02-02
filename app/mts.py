@@ -198,7 +198,7 @@ def checkFormulaSatisfiable(syntaxTree):
 def isSatisfiable(mtsNode, usedConstants, runnedGammaRules=[], subtreeIdentifier=[]):
     runnedGammaRules = runnedGammaRules.copy()
     if subtreeIdentifier:
-        print('Podgałąź', '-'.join(map(str, subtreeIdentifier)))
+        print('Gałąź', '-'.join(map(str, subtreeIdentifier)))
     
     print(printMtsNode(mtsNode, usedConstants))
 
@@ -253,7 +253,8 @@ def isSatisfiable(mtsNode, usedConstants, runnedGammaRules=[], subtreeIdentifier
                 if isSatisfiable([*mtsNode, currentFormula], usedConstants, subtreeIdentifier=subtreeIdentifier + [index]):
                     return True
                 else:    
-                    print('Gałąź niespełnialna')
+                    branchName = '-'.join(map(str, subtreeIdentifier + [index]))
+                    print(f'Gałąź {branchName} niespełnialna')
             
             print()
             return False
