@@ -11,7 +11,7 @@ tokensTypes = {
     'negation': r'^(?:NOT|~|¬)$',
     'conjunction': r'^(?:AND|&|∧)$',
     'disjunction': r'^(?:OR|\||∨)$',
-    'implication': r'^(?:IMPLIES|→)$',
+    'implication': r'^(?:IMPLIES|→|->)$',
     'equivalence': r'^(?:IFF|↔)$',
     'exclusionary_alternative': r'^(?:XOR|⊕)$',
     'universal_quantifier': r'^(?:FORALL|∀)$',
