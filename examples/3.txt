@@ -1,0 +1,1 @@
+Y X X Y p/2 FORALL Y q/1 IMPLIES a p/1 Y q/1 XOR & EXISTS

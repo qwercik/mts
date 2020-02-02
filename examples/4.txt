@@ -1,0 +1,1 @@
+X X p/1 X q/1 -> FORALL X X p/1 FORALL X X q/1 FORALL -> -> ~

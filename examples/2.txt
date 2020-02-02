@@ -1,0 +1,1 @@
+X X p/1 Y Y p/1 ~ FORALL a p/1 ~ & | EXISTS ~

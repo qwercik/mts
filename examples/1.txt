@@ -1,0 +1,1 @@
+Z Y Z T X t/1 ~ X p/1 | Y r/1 ~ Y q/1 | & a t/1 b r/1 | & Z p/1 ~ & T q/1 ~ & FORALL FORALL FORALL FORALL
