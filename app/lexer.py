@@ -6,14 +6,14 @@ class UnrecognizableSymbolError(Exception):
 tokensTypes = {
     'constant': r'^[a-e]$',
     'variable': r'^[t-z]$',
-    'function': r'^([f-n])/(\d)$',
-    'predicate': r'^([p-z])/(\d)$',
+    'function': r'^([f-n])/(\d+)$',
+    'predicate': r'^([p-z])/(\d+)$',
     'negation': r'^~$',
     'conjunction': r'^&$',
     'disjunction': r'^\|$',
     'implication': r'^->$',
     'equivalence': r'^<->$',
-    'exclusionary_alternative': r'^\^$',
+    'exclusionary_alternative': r'^\+$',
     'universal_quantifier': r'^A$',
     'existential_quantifier': r'^E$'
 }
