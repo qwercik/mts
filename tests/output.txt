@@ -1,7 +1,0 @@
-p(a)
-(EXISTS Z p(Z))
-(FORALL Z ((∃ X p(f(X, a))) → (FORALL Y p(Y, f(Z)))))
-(EXISTS Z (FORALL Y (EXISTS X (q(X, b, c) & (~ p(Z, f(Y)))))))
-(EXISTS X (FORALL Y ((p(X, Y) AND (~ p(Y, X))) AND q(X, Y))))
-((~ (FORALL X (p(X) → q(X)))) → ((FORALL X p(X)) → (FORALL X q(X))))
-(NOT (p(X, Y, X, Y, X, Y) IFF (EXISTS Y q(X, Y, X, Y, X, Y, X))))
