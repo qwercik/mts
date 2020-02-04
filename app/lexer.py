@@ -5,17 +5,17 @@ class UnrecognizableSymbolError(Exception):
 
 tokensTypes = {
     'constant': r'^[a-e]$',
-    'variable': r'^[A-Z]$',
+    'variable': r'^[t-z]$',
     'function': r'^([f-n])/(\d)$',
     'predicate': r'^([p-z])/(\d)$',
-    'negation': r'^(?:NOT|~|¬)$',
-    'conjunction': r'^(?:AND|&|∧)$',
-    'disjunction': r'^(?:OR|\||∨)$',
-    'implication': r'^(?:IMPLIES|→|->)$',
-    'equivalence': r'^(?:IFF|↔)$',
-    'exclusionary_alternative': r'^(?:XOR|⊕)$',
-    'universal_quantifier': r'^(?:FORALL|∀)$',
-    'existential_quantifier': r'^(?:EXISTS|∃)$'
+    'negation': r'^~$',
+    'conjunction': r'^&$',
+    'disjunction': r'^\|$',
+    'implication': r'^->$',
+    'equivalence': r'^<->$',
+    'exclusionary_alternative': r'^\^$',
+    'universal_quantifier': r'^A$',
+    'existential_quantifier': r'^E$'
 }
 
 def tokenizeRpnFormula(rpnFormula):
