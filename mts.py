@@ -25,7 +25,7 @@ def main():
             syntaxTree = parser.parse(tokensStream)
             infixFormula = render.renderInfix(syntaxTree)
 
-            print('Formuła spełnialna' if mts.checkFormulaSatisfiable(syntaxTree) else 'Formuła niespełnialna')
+            print('Satisfiable' if mts.checkFormulaSatisfiable(syntaxTree) else 'Unsatisfiable')
             print()
 
         except lexer.UnrecognizableSymbolError as symbol:

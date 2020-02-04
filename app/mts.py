@@ -197,7 +197,7 @@ def checkFormulaSatisfiable(syntaxTree):
 
 def isSatisfiable(mtsNode, usedConstants, subtreeIdentifier):
     if subtreeIdentifier:
-        print('Gałąź', '-'.join(map(str, subtreeIdentifier)))
+        print('Branch', '-'.join(map(str, subtreeIdentifier)))
     
     print(printMtsNode(mtsNode, usedConstants))
 
@@ -222,13 +222,13 @@ def isSatisfiable(mtsNode, usedConstants, subtreeIdentifier):
         
         # Priority of running rules:
         if formulasTypes['alfa']:
-            print('Uruchamiam formułę alfa')
+            print('Run alpha rule')
             formula = mtsNode.pop(formulasTypes['alfa'].pop())
             mtsNode += runAlfaRule(formula)
             print(printMtsNode(mtsNode, usedConstants))
         
         elif formulasTypes['delta']:
-            print('Uruchamiam regułę delta')
+            print('Run delta rule')
             newConstant = None
             for name in constantsNames:
                 if not name in usedConstants:
@@ -236,7 +236,7 @@ def isSatisfiable(mtsNode, usedConstants, subtreeIdentifier):
                     usedConstants.append(newConstant)
                     break
             else:
-                panic(5, 'Nie mogę znaleźć nowej nazwy dla stałej!')
+                panic(5, 'Cannot find a new name for constant!')
             
             formula = mtsNode.pop(formulasTypes['delta'].pop())
             internalFormula = formula['arguments'][0] if formula['category'] == 'unary_operator' else formula
@@ -247,7 +247,7 @@ def isSatisfiable(mtsNode, usedConstants, subtreeIdentifier):
             print(printMtsNode(mtsNode, usedConstants))
         
         elif formulasTypes['beta']:
-            print('Uruchamiam regułę beta')
+            print('Run beta rule')
             formula = mtsNode.pop(formulasTypes['beta'].pop())
             result = runBetaRule(formula)
 
@@ -256,10 +256,10 @@ def isSatisfiable(mtsNode, usedConstants, subtreeIdentifier):
                 branchName = '-'.join(map(str, subtreeIdentifier + [index]))
                 
                 if isSatisfiable(copy.deepcopy([*mtsNode, currentFormula]), usedConstants.copy(), subtreeIdentifier + [index]):
-                    print(f'Gałąź {branchName} spełnialna\n')
+                    print(f'Branch {branchName} satisfiable\n')
                     return True
                 else:    
-                    print(f'Gałąź {branchName} niespełnialna\n')
+                    print(f'Branch {branchName} unsatisfiable\n')
                 
             return False
 
@@ -274,7 +274,7 @@ def isSatisfiable(mtsNode, usedConstants, subtreeIdentifier):
                 for constant in usedConstants:
                     if constant not in mtsNode[index]['runnedConstants']:
                         if times == 0:
-                            print('Uruchamiam regułę gamma')
+                            print('Run gamma rule')
                         
                         formulaCopy = copy.deepcopy(formula['formula'])
                         substituteVariable(formulaCopy, formula['variable']['name'], constant)

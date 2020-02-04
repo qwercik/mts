@@ -19,30 +19,30 @@ Each formula should end with a single newline character. You will get answer in 
 ```
 >>> X X p/1 Y Y p/1 ~ FORALL a p/1 ~ & | EXISTS ~
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a)))}, {a})
-Uruchamiam regułę gamma
+Run gamma rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ (p(a) | (FORALL Y ~ p(Y) & ~ p(a)))}, {a})
-Uruchamiam formułę alfa
+Run alpha rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ (FORALL Y ~ p(Y) & ~ p(a))}, {a})
-Uruchamiam regułę beta
+Run beta rule
 
-Gałąź 0
+Branch 0
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ FORALL Y ~ p(Y)}, {a})
-Uruchamiam regułę delta
+Run delta rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ (~ p(b))}, {a, b})
-Uruchamiam formułę alfa
+Run alpha rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(b)}, {a, b})
-Uruchamiam regułę gamma
+Run gamma rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(b), ~ (p(b) | (FORALL Y ~ p(Y) & ~ p(a)))}, {a, b})
-Uruchamiam formułę alfa
+Run alpha rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(b), ~ p(b), ~ (FORALL Y ~ p(Y) & ~ p(a))}, {a, b})
-Gałąź 0 niespełnialna
+Branch 0 unsatisfiable
 
 
-Gałąź 1
+Branch 1
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ (~ p(a))}, {a})
-Uruchamiam formułę alfa
+Run alpha rule
 ({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(a)}, {a})
-Gałąź 1 niespełnialna
+Branch 1 unsatisfiable
 
-Formuła niespełnialna
+Unsatisfiable
 ```
