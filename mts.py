@@ -8,18 +8,25 @@ import json
 from app import lexer, parser, render, mts
 from app.debug import error, panic
 
-DEVELOPER_URL = 'https://github.com/qwercik/r2i'
+DEVELOPER_URL = 'https://github.com/qwercik/mts'
 
 def main():
-    for line in sys.stdin:
-        rpnFormula = line.strip()
+    while True:
+        print('>>> ', end='')
+        line = input().strip()
+
+        if line == 'exit' or line == '':
+            break
         
+        rpnFormula = line
+
         try:
             tokensStream = lexer.tokenizeRpnFormula(rpnFormula)
             syntaxTree = parser.parse(tokensStream)
             infixFormula = render.renderInfix(syntaxTree)
 
             print('Formuła spełnialna' if mts.checkFormulaSatisfiable(syntaxTree) else 'Formuła niespełnialna')
+            print()
 
         except lexer.UnrecognizableSymbolError as symbol:
             error(f'Unrecognizable symbol {symbol}')
@@ -36,8 +43,8 @@ def main():
             error(f'Incorrect arguments number in {tokenType}')
         except parser.EmptyFormula:
             error(f'Empty formula')
-        #except:
-        #    panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
+        except:
+            panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
 
 if __name__ == '__main__':
     main()
