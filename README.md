@@ -20,40 +20,40 @@ Type formulas (in Reverse Polish Notation) to the standard input.
 Each formula should end with a single newline character. You will get answer in the following lines.
 
 ## Example
-
 ```
->>> X X p/1 Y Y p/1 ~ FORALL a p/1 ~ & | EXISTS ~
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a)))}, {a})
+>>> x x p/1 y y p/1 ~ A a p/1 ~ & | E ~
+({~Ex (p(x) | (Ay ~p(y) & ~p(a)))}, {a})
 Run gamma rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ (p(a) | (FORALL Y ~ p(Y) & ~ p(a)))}, {a})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~(p(a) | (Ay ~p(y) & ~p(a)))}, {a})
 Run alpha rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ (FORALL Y ~ p(Y) & ~ p(a))}, {a})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), ~(Ay ~p(y) & ~p(a))}, {a})
 Run beta rule
 
 Branch 0
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ FORALL Y ~ p(Y)}, {a})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), ~Ay ~p(y)}, {a})
 Run delta rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ (~ p(b))}, {a, b})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), ~(~p(b))}, {a, b})
 Run alpha rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(b)}, {a, b})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), p(b)}, {a, b})
 Run gamma rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(b), ~ (p(b) | (FORALL Y ~ p(Y) & ~ p(a)))}, {a, b})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), p(b), ~(p(b) | (Ay ~p(y) & ~p(a)))}, {a, b})
 Run alpha rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(b), ~ p(b), ~ (FORALL Y ~ p(Y) & ~ p(a))}, {a, b})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), p(b), ~p(b), ~(Ay ~p(y) & ~p(a))}, {a, b})
 Branch 0 unsatisfiable
 
 
 Branch 1
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), ~ (~ p(a))}, {a})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), ~(~p(a))}, {a})
 Run alpha rule
-({~ EXISTS X (p(X) | (FORALL Y ~ p(Y) & ~ p(a))), ~ p(a), p(a)}, {a})
+({~Ex (p(x) | (Ay ~p(y) & ~p(a))), ~p(a), p(a)}, {a})
 Branch 1 unsatisfiable
 
 Unsatisfiable
+
+>>> 
 ```
 
 Don't hesitate to check other examples in EXAMPLES.md file!
-
 
 ## Syntax
 

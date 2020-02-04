@@ -1,25 +1,25 @@
 # Some more examples
 
 ```
-Z Y Z T X t/1 ~ X p/1 | Y r/1 ~ Y q/1 | & a t/1 b r/1 | & Z p/1 ~ & T q/1 ~ & FORALL FORALL FORALL FORALL
+z y z t x t/1 ~ x p/1 | y r/1 ~ y q/1 | & a t/1 b r/1 | & z p/1 ~ & t q/1 ~ & A A A A
 ```
 
 ```
-X X p/1 Y Y p/1 ~ FORALL a p/1 ~ & | EXISTS ~
+x x p/1 y y p/1 ~ A a p/1 ~ & | E ~
 ```
 
 ```
-Y X X Y p/2 FORALL Y q/1 IMPLIES a p/1 Y q/1 XOR & EXISTS
+y x x y p/2 A y q/1 -> a p/1 y q/1 + & E
 ```
 
 ```
-X X p/1 X q/1 -> FORALL X X p/1 FORALL X X q/1 FORALL -> -> ~
+x x p/1 x q/1 -> A x x p/1 A x x q/1 A -> -> ~
 ```
 
 ```
-X X p/1 FORALL 
+x x p/1 A
 ```
 
 ```
-Y Z X X p/1 Y q/1 IMPLIES Z q/1 X p/1 IMPLIES & FORALL EXISTS EXISTS X Y X p/1 Y q/1 IFF EXISTS FORALL IMPLIES ~
+y z x x p/1 y q/1 -> z q/1 x p/1 -> & A E E x y x p/1 y q/1 <-> E A -> ~
 ```
