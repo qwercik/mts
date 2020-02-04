@@ -97,7 +97,7 @@ def createImplication(antecedentTree, consequentTree):
     return {
         'type': 'implication',
         'category': 'binary_operator',
-        'symbol': 'IMPLIES',
+        'symbol': '<->',
         'arguments': [antecedentTree, consequentTree]
     }
 

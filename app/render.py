@@ -33,7 +33,7 @@ def renderInfix(syntaxTree):
         if argument['category'] in ['unary_operator', 'binary_operator']:
             argumentString = f'({argumentString})'
         
-        return f'{operator} {argumentString}'
+        return f'{operator}{argumentString}'
     elif category == 'binary_operator':
         operator = syntaxTree['symbol']
         argumentsStrings = list(map(lambda x: renderInfix(x), syntaxTree['arguments']))
@@ -53,4 +53,4 @@ def renderInfix(syntaxTree):
         if syntaxTree['formula']['category'] == 'binary_operator':
             formula = f'({formula})'
 
-        return f'{quantifier} {variable} {formula}'
+        return f'{quantifier}{variable} {formula}'

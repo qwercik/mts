@@ -12,15 +12,10 @@ DEVELOPER_URL = 'https://github.com/qwercik/mts'
 
 def main():
     while True:
-        print('>>> ', end='')
-        line = input().strip()
-
-        if line == 'exit' or line == '':
-            break
-        
-        rpnFormula = line
-
         try:
+            print('>>> ', end='')
+            rpnFormula = input().strip()
+
             tokensStream = lexer.tokenizeRpnFormula(rpnFormula)
             syntaxTree = parser.parse(tokensStream)
             infixFormula = render.renderInfix(syntaxTree)
@@ -43,6 +38,9 @@ def main():
             error(f'Incorrect arguments number in {tokenType}')
         except parser.EmptyFormula:
             error(f'Empty formula')
+        except EOFError:
+            print()
+            break
         except:
             panic(255, f'Unknown error ocurred. Report the developer: {DEVELOPER_URL}')
 
