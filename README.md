@@ -19,7 +19,7 @@ chmod +x mts.py
 Type formulas (in Reverse Polish Notation) to the standard input.
 Each formula should end with a single newline character. You will get answer in the following lines.
 
-# Example
+## Example
 
 ```
 >>> X X p/1 Y Y p/1 ~ FORALL a p/1 ~ & | EXISTS ~
@@ -51,6 +51,9 @@ Branch 1 unsatisfiable
 
 Unsatisfiable
 ```
+
+Don't hesitate to check other examples in EXAMPLES.md file!
+
 
 ## Syntax
 
