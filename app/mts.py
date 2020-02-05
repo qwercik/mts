@@ -188,7 +188,7 @@ def printMtsNode(mtsNode, usedConstants):
     return f'({{{formulas}}}, {{{constants}}})'
 
 def checkFormulaSatisfiable(syntaxTree):
-    usedConstants = findAllConstants(syntaxTree) or constantsNames[:1]
+    usedConstants = list(set(findAllConstants(syntaxTree))) or constantsNames[:1]
     usedConstants.sort()
 
     mtsNode = [syntaxTree]
